@@ -9,10 +9,7 @@ import type {
     PlayMethod,
     RepeatMode
 } from '@jellyfin/sdk/lib/generated-client';
-import type {
-    TextTrackEdgeType,
-    Track
-} from 'chromecast-caf-receiver/cast.framework.messages';
+import type { Track } from 'chromecast-caf-receiver/cast.framework.messages';
 
 type BusMessageType =
     | 'connectionerror'
@@ -80,11 +77,12 @@ type SupportedCommands = Record<string, (data: DataMessage) => void>;
 // /From commandHandler
 
 interface SubtitleAppearance {
-    dropShadow: TextTrackEdgeType;
+    dropShadow: string;
     font: string;
     textColor: string;
     textBackground: string;
     textSize: 'smaller' | 'small' | 'large' | 'larger' | 'extralarge';
+    textWeight: 'normal' | 'bold';
 }
 
 interface StreamInfo {
