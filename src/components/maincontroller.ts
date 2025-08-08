@@ -758,94 +758,118 @@ export function setTextTrack(index: number | null): void {
                 const textTrackStyle =
                     new cast.framework.messages.TextTrackStyle();
 
-                textTrackStyle.foregroundColor =
-                    `${subtitleAppearance.textColor}FF`.toUpperCase();
+                if (subtitleAppearance.textColor) {
+                    // Append the transparency, hardcoded to 100%
+                    textTrackStyle.foregroundColor = `${subtitleAppearance.textColor}FF`;
+                }
+
                 textTrackStyle.backgroundColor = '#00000000'; // Transparent background
-                textTrackStyle.edgeColor = '#000000FF'; // Black outline
 
-                switch (subtitleAppearance.textWeight) {
-                    case 'bold':
-                        textTrackStyle.fontStyle =
-                            cast.framework.messages.TextTrackFontStyle.BOLD;
-                        break;
-                    default:
-                        textTrackStyle.fontStyle =
-                            cast.framework.messages.TextTrackFontStyle.NORMAL;
+                if (subtitleAppearance.textWeight) {
+                    switch (subtitleAppearance.textWeight) {
+                        case 'bold':
+                            textTrackStyle.fontStyle =
+                                cast.framework.messages.TextTrackFontStyle.BOLD;
+                            break;
+                        default:
+                            textTrackStyle.fontStyle =
+                                cast.framework.messages.TextTrackFontStyle.NORMAL;
+                    }
+                } else {
+                    textTrackStyle.fontStyle =
+                        cast.framework.messages.TextTrackFontStyle.NORMAL;
                 }
 
-                switch (subtitleAppearance.dropShadow) {
-                    case 'depressed':
-                        textTrackStyle.edgeType =
-                            cast.framework.messages.TextTrackEdgeType.DEPRESSED;
-                        break;
-                    case 'raised':
-                        textTrackStyle.edgeType =
-                            cast.framework.messages.TextTrackEdgeType.RAISED;
-                        break;
-                    case 'uniform':
-                        textTrackStyle.edgeType =
-                            cast.framework.messages.TextTrackEdgeType.OUTLINE;
-                        break;
-                    case 'dropshadow':
-                        textTrackStyle.edgeType =
-                            cast.framework.messages.TextTrackEdgeType.DROP_SHADOW;
-                        break;
-                    default:
-                        textTrackStyle.edgeType =
-                            cast.framework.messages.TextTrackEdgeType.NONE;
+                if (subtitleAppearance.dropShadow) {
+                    switch (subtitleAppearance.dropShadow) {
+                        case 'depressed':
+                            textTrackStyle.edgeType =
+                                cast.framework.messages.TextTrackEdgeType.DEPRESSED;
+                            break;
+                        case 'raised':
+                            textTrackStyle.edgeType =
+                                cast.framework.messages.TextTrackEdgeType.RAISED;
+                            break;
+                        case 'uniform':
+                            textTrackStyle.edgeType =
+                                cast.framework.messages.TextTrackEdgeType.OUTLINE;
+                            break;
+                        case 'dropshadow':
+                            textTrackStyle.edgeType =
+                                cast.framework.messages.TextTrackEdgeType.DROP_SHADOW;
+                            break;
+                        default:
+                            textTrackStyle.edgeType =
+                                cast.framework.messages.TextTrackEdgeType.NONE;
+                    }
+
+                    textTrackStyle.edgeColor = '#000000FF';
+                } else {
+                    textTrackStyle.edgeType =
+                        cast.framework.messages.TextTrackEdgeType.NONE;
                 }
 
-                switch (subtitleAppearance.font) {
-                    case 'typewriter':
-                        textTrackStyle.fontGenericFamily =
-                            cast.framework.messages.TextTrackFontGenericFamily.MONOSPACED_SERIF;
-                        break;
-                    case 'print':
-                        textTrackStyle.fontGenericFamily =
-                            cast.framework.messages.TextTrackFontGenericFamily.SERIF;
-                        break;
-                    case 'console':
-                        textTrackStyle.fontGenericFamily =
-                            cast.framework.messages.TextTrackFontGenericFamily.MONOSPACED_SERIF;
-                        break;
-                    case 'cursive':
-                        textTrackStyle.fontGenericFamily =
-                            cast.framework.messages.TextTrackFontGenericFamily.CURSIVE;
-                        break;
-                    case 'casual':
-                        textTrackStyle.fontGenericFamily =
-                            cast.framework.messages.TextTrackFontGenericFamily.CASUAL;
-                        break;
-                    case 'smallcaps':
-                        textTrackStyle.fontGenericFamily =
-                            cast.framework.messages.TextTrackFontGenericFamily.SMALL_CAPITALS;
-                        break;
-                    default:
-                        textTrackStyle.fontFamily = 'Droid Sans';
-                        textTrackStyle.fontGenericFamily =
-                            cast.framework.messages.TextTrackFontGenericFamily.SANS_SERIF;
-                        break;
+                if (subtitleAppearance.font) {
+                    switch (subtitleAppearance.font) {
+                        case 'typewriter':
+                            textTrackStyle.fontGenericFamily =
+                                cast.framework.messages.TextTrackFontGenericFamily.MONOSPACED_SERIF;
+                            break;
+                        case 'print':
+                            textTrackStyle.fontGenericFamily =
+                                cast.framework.messages.TextTrackFontGenericFamily.SERIF;
+                            break;
+                        case 'console':
+                            textTrackStyle.fontGenericFamily =
+                                cast.framework.messages.TextTrackFontGenericFamily.MONOSPACED_SERIF;
+                            break;
+                        case 'cursive':
+                            textTrackStyle.fontGenericFamily =
+                                cast.framework.messages.TextTrackFontGenericFamily.CURSIVE;
+                            break;
+                        case 'casual':
+                            textTrackStyle.fontGenericFamily =
+                                cast.framework.messages.TextTrackFontGenericFamily.CASUAL;
+                            break;
+                        case 'smallcaps':
+                            textTrackStyle.fontGenericFamily =
+                                cast.framework.messages.TextTrackFontGenericFamily.SMALL_CAPITALS;
+                            break;
+                        default:
+                            textTrackStyle.fontFamily = 'Droid Sans';
+                            textTrackStyle.fontGenericFamily =
+                                cast.framework.messages.TextTrackFontGenericFamily.SANS_SERIF;
+                            break;
+                    }
+                } else {
+                    // Default to a sans-serif font if none was set by the user.
+                    textTrackStyle.fontGenericFamily =
+                        cast.framework.messages.TextTrackFontGenericFamily.SANS_SERIF;
                 }
 
-                switch (subtitleAppearance.textSize) {
-                    case 'smaller':
-                        textTrackStyle.fontScale = 0.6;
-                        break;
-                    case 'small':
-                        textTrackStyle.fontScale = 0.8;
-                        break;
-                    case 'large':
-                        textTrackStyle.fontScale = 1.15;
-                        break;
-                    case 'larger':
-                        textTrackStyle.fontScale = 1.3;
-                        break;
-                    case 'extralarge':
-                        textTrackStyle.fontScale = 1.45;
-                        break;
-                    default:
-                        textTrackStyle.fontScale = 1.0;
-                        break;
+                if (subtitleAppearance.textSize) {
+                    switch (subtitleAppearance.textSize) {
+                        case 'smaller':
+                            textTrackStyle.fontScale = 0.6;
+                            break;
+                        case 'small':
+                            textTrackStyle.fontScale = 0.8;
+                            break;
+                        case 'large':
+                            textTrackStyle.fontScale = 1.15;
+                            break;
+                        case 'larger':
+                            textTrackStyle.fontScale = 1.3;
+                            break;
+                        case 'extralarge':
+                            textTrackStyle.fontScale = 1.45;
+                            break;
+                        default:
+                            textTrackStyle.fontScale = 1.0;
+                            break;
+                    }
+                } else {
+                    textTrackStyle.fontScale = 1.0;
                 }
 
                 textTracksManager.setTextTrackStyle(textTrackStyle);
