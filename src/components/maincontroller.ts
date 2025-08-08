@@ -763,7 +763,13 @@ export function setTextTrack(index: number | null): void {
                     textTrackStyle.foregroundColor = `${subtitleAppearance.textColor}FF`;
                 }
 
-                textTrackStyle.backgroundColor = '#00000000'; // Transparent background
+                if (subtitleAppearance.textBackground) {
+                    if (subtitleAppearance.textBackground === 'transparent') {
+                        textTrackStyle.backgroundColor = '#00000000'; // RGBA
+                    } else {
+                        textTrackStyle.backgroundColor = `${subtitleAppearance.textBackground}FF`;
+                    }
+                }
 
                 if (subtitleAppearance.textWeight) {
                     switch (subtitleAppearance.textWeight) {
